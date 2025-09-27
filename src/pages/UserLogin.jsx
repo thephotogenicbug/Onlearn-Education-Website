@@ -8,38 +8,40 @@ import { toast } from "react-toastify";
 const UserLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, loading, error, token } = useSelector(
+  const { user, token, loading, error } = useSelector(
     (state) => state.user_auth
   );
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-    dispatch(userLogin(formData));
+    // Send JSON instead of FormData
+    dispatch(userLogin({ email, password }));
+    setSubmitted(true);
   };
 
+  // Redirect on successful login
   useEffect(() => {
-    if (user && token) {
-      toast.success("Login success");
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
+    if (user && token && submitted) {
+      toast.success("Login successful!");
+      setTimeout(() => navigate("/"), 1500);
     }
-  }, [user, token, navigate]);
+  }, [user, token, submitted, navigate]);
 
+  // Show errors
   useEffect(() => {
-    if (error) {
+    if (error && submitted) {
       toast.error(error);
+      setSubmitted(false);
     }
-  }, [error]);
+  }, [error, submitted]);
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-[#e0f7f9] to-[#f0fcfc]">
+      {/* Left Image (Desktop Only) */}
       <div className="w-1/2 h-screen hidden md:block">
         <img
           src={assets.login_img}
@@ -48,6 +50,7 @@ const UserLogin = () => {
         />
       </div>
 
+      {/* Login Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center">
         <div className="w-full max-w-md px-8 py-12 bg-white shadow-2xl rounded-2xl flex flex-col items-center">
           <h1 className="text-3xl text-center text-[#0B7077] font-bold uppercase mb-8 tracking-wide">
@@ -75,9 +78,11 @@ const UserLogin = () => {
               type="submit"
               className="w-full bg-[#0B7077] text-white p-3 rounded-lg hover:bg-[#095f63] transition cursor-pointer uppercase font-semibold"
             >
-              {loading ? "Please wait" : "Login"}
+              {loading ? "Please wait..." : "Login"}
             </button>
-            {error && <p className="text-red-500 text-center">{error}</p>}
+            {token
+              ? error && <p className="text-red-500 text-center">{error}</p>
+              : ""}
           </form>
 
           <p className="text-gray-500 text-sm mt-6 text-center">

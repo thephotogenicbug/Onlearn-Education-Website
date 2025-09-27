@@ -4,19 +4,16 @@ import Cookies from "js-cookie";
 
 const API = import.meta.env.VITE_BACKEND_URL;
 
+// Register user
 export const userRegister = createAsyncThunk(
-  `user/userRegister`,
+  "user/userRegister",
   async (userData, { rejectWithValue }) => {
     try {
       const res = await axios.post(`${API}/user/user-register`, userData, {
         withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
-      if (!res.data.success) {
-        throw new Error(res.data.message);
-      }
+      if (!res.data.success) throw new Error(res.data.message);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
@@ -24,19 +21,16 @@ export const userRegister = createAsyncThunk(
   }
 );
 
+// Login user
 export const userLogin = createAsyncThunk(
-  `user/userLogin`,
+  "user/userLogin",
   async (userData, { rejectWithValue }) => {
     try {
       const res = await axios.post(`${API}/user/user-login`, userData, {
         withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
-      if (!res.data.success) {
-        throw new Error(res.data.message);
-      }
+      if (!res.data.success) throw new Error(res.data.message);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
@@ -44,8 +38,9 @@ export const userLogin = createAsyncThunk(
   }
 );
 
+// Logout user
 export const userLogout = createAsyncThunk(
-  `user/userLogout`,
+  "user/userLogout",
   async (_, { rejectWithValue }) => {
     try {
       const res = await axios.post(
@@ -55,10 +50,7 @@ export const userLogout = createAsyncThunk(
           withCredentials: true,
         }
       );
-
-      if (!res.data.success) {
-        throw new Error(res.data.message);
-      }
+      if (!res.data.success) throw new Error(res.data.message);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
@@ -66,17 +58,16 @@ export const userLogout = createAsyncThunk(
   }
 );
 
+// Get user info
 export const getUser = createAsyncThunk(
-  `user/getUser`,
+  "user/getUser",
   async (_, { rejectWithValue }) => {
     try {
       const res = await axios.get(`${API}/user/get-user`, {
         withCredentials: true,
+        headers: { "Content-Type": "application/json" },
       });
-      if (!res.data.success) {
-        throw new Error(res.data.message);
-      }
-      console.log("redux user", res.data);
+      if (!res.data.success) throw new Error(res.data.message);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
@@ -84,18 +75,20 @@ export const getUser = createAsyncThunk(
   }
 );
 
+const initialState = {
+  user: null,
+  token: Cookies.get("token") || null,
+  loading: false,
+  error: null,
+};
+
 const user_authSlice = createSlice({
   name: "user_auth",
-  initialState: {
-    user: null,
-    token: Cookies.get("token") || null,
-    loading: false,
-    error: null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // register user
+      // Register
       .addCase(userRegister.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -104,13 +97,17 @@ const user_authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        Cookies.set("token", action.payload.token, { path: "/" });
+        Cookies.set("token", action.payload.token, {
+          path: "/",
+          sameSite: "Lax",
+        });
       })
       .addCase(userRegister.rejected, (state, action) => {
-        (state.loading = false),
-          (state.error = action.payload || action.error.message);
+        state.loading = false;
+        state.error = action.payload || action.error.message;
       })
-      // user login
+
+      // Login
       .addCase(userLogin.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -119,13 +116,17 @@ const user_authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        Cookies.set("token", action.payload.token, { path: "/" });
+        Cookies.set("token", action.payload.token, {
+          path: "/",
+          sameSite: "Lax",
+        });
       })
       .addCase(userLogin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error.message;
       })
-      // user logout
+
+      // Logout
       .addCase(userLogout.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -140,7 +141,8 @@ const user_authSlice = createSlice({
         state.loading = false;
         state.error = action.payload || action.error.message;
       })
-      // get user data
+
+      // Get user
       .addCase(getUser.pending, (state) => {
         state.loading = true;
         state.error = null;
