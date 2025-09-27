@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { assets } from "../../assets/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { getCoursePublic } from "../../../redux/courseSlice";
+import { Link } from "react-router-dom";
 
 const PopularCourses = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,16 @@ const PopularCourses = () => {
   useEffect(() => {
     dispatch(getCoursePublic());
   }, [dispatch]);
+
+  const tabs = [
+    "All Programme",
+    "UI/UX Design",
+    "Program Design",
+    "Programming",
+    "Data Science",
+    "Data Analytics",
+  ];
+  const activeTab = "All Programme"; // State would manage this in a real app
 
   return (
     <>
@@ -35,25 +46,23 @@ const PopularCourses = () => {
           </h1>
         </div>
       </div>
-      <div className=" hidden  md:flex flex-row justify-evenly md:-space-x-20 mt-10">
-        <div className=" bg-[#0B7077] p-3 rounded-lg">
-          <p className="text-white text-sm ">All Programme</p>
-        </div>
-        <div className=" outline p-3 rounded-lg hover:bg-[#0B7077] cursor-pointer text-gray-600 hover:text-white">
-          <p className=" text-sm ">UI/UX Design</p>
-        </div>
-        <div className=" outline p-3 rounded-lg hover:bg-[#0B7077] cursor-pointer text-gray-600  hover:text-white">
-          <p className=" text-sm ">Program Design</p>
-        </div>
-        <div className=" outline p-3 rounded-lg hover:bg-[#0B7077] cursor-pointer text-gray-600 hover:text-white ">
-          <p className=" text-sm ">Programming</p>
-        </div>
-        <div className=" outline p-3 rounded-lg hover:bg-[#0B7077] cursor-pointer text-gray-600  hover:text-white">
-          <p className=" text-sm ">Data Science</p>
-        </div>
-        <div className=" outline p-3 rounded-lg hover:bg-[#0B7077] cursor-pointer text-gray-600  hover:text-white">
-          <p className=" text-sm ">Data Analytics</p>
-        </div>
+      <div className="flex flex-wrap justify-center gap-2 mb-12 px-4 mt-10">
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            // Active tab styling
+            className={`
+              px-5 py-2 text-sm font-medium rounded-full border transition duration-300 whitespace-nowrap
+              ${
+                tab === activeTab
+                  ? "bg-[#0B7077] text-white border-[#0A4F3D]" // Active (Dark Teal)
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50" // Inactive
+              }
+            `}
+          >
+            {tab}
+          </button>
+        ))}
       </div>
       <div className=" grid grid-cols-1 gap-y-12 md:grid-cols-4 md:gap-56 place-items-center mt-10">
         {courses_public?.map((course) => {
@@ -101,9 +110,11 @@ const PopularCourses = () => {
                   </h2>
                 </div>
                 <div>
-                  <button className="bg-[#0B7077] text-white px-6 py-2.5 rounded-lg cursor-pointer ">
-                    Enroll Now
-                  </button>
+                  <Link to={`/${course.courseName}/${course._id}`}>
+                    <button className="bg-[#0B7077] text-white px-6 py-2.5 rounded-lg cursor-pointer ">
+                      Enroll Now
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

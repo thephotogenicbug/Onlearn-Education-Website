@@ -16,6 +16,7 @@ import UpdateCourseForm from "./pages/UpdateCourseForm";
 import UserSignup from "./pages/UserSignup";
 import UserLogin from "./pages/UserLogin";
 import NotFoundPage from "./components/NotFound/NotFound";
+import CourseDetailsPage from "./components/PopularCourses/CourseDetailsPage";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<UserSignup />} />
           <Route path="/login" element={<UserLogin />} />
+          <Route path="/:name/:id" element={<CourseDetailsPage />} />
           <Route path="/admin/signup" element={<Signup />} />
           <Route path="/admin/login" element={<Login />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
