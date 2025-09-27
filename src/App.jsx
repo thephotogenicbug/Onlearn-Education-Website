@@ -15,6 +15,7 @@ import ViewCoursesAdmin from "./pages/ViewCoursesAdmin";
 import UpdateCourseForm from "./pages/UpdateCourseForm";
 import UserSignup from "./pages/UserSignup";
 import UserLogin from "./pages/UserLogin";
+import NotFoundPage from "./components/NotFound/NotFound";
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/admin/edit-course/:id" element={<UpdateCourseForm />} />
           <Route path="/admin/view-courses" element={<ViewCoursesAdmin />} />
           <Route path="/contact-us" element={<Contact />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <ToastContainer position="top-center" autoClose={3000} />
       </BrowserRouter>
