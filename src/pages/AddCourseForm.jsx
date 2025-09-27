@@ -16,9 +16,7 @@ const AddCourseForm = () => {
   const { course, loading, error } = useSelector((state) => state.course);
 
   const onDrop = useCallback((acceptedFiles) => {
-    if (acceptedFiles.length > 0) {
-      setImage(acceptedFiles[0]);
-    }
+    if (acceptedFiles.length > 0) setImage(acceptedFiles[0]);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -35,7 +33,6 @@ const AddCourseForm = () => {
     formData.append("baseprice", basePrice);
     formData.append("price", discountedPrice);
     formData.append("image", image);
-
     dispatch(createNewCourse(formData));
   };
 
@@ -51,19 +48,17 @@ const AddCourseForm = () => {
   }, [course]);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
+    if (error) toast.error(error);
   }, [error]);
 
   return (
-    <div className="flex flex-row min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-50">
       <SideBar />
 
-      <div className="w-full p-6 md:p-10 mt-20">
-        <div className="mb-6">
-          <p className="text-gray-500 text-sm">Form</p>
-          <h1 className="text-2xl md:text-3xl font-semibold text-[#0B7077]">
+      <div className="flex-1 p-6 md:p-12 mt-20">
+        <div className="mb-8">
+          <p className="text-gray-500 text-sm uppercase tracking-wide">Form</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-[#0B7077]">
             Add New Course
           </h1>
         </div>
@@ -75,7 +70,7 @@ const AddCourseForm = () => {
               placeholder="Course Name"
               value={courseName}
               onChange={(e) => setCourseName(e.target.value)}
-              className="border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0B7077]"
+              className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0B7077] shadow-sm"
               required
             />
             <input
@@ -83,7 +78,7 @@ const AddCourseForm = () => {
               placeholder="Base Price"
               value={basePrice}
               onChange={(e) => setBasePrice(e.target.value)}
-              className="border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0B7077]"
+              className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0B7077] shadow-sm"
               required
             />
             <input
@@ -91,7 +86,7 @@ const AddCourseForm = () => {
               placeholder="Discounted Price"
               value={discountedPrice}
               onChange={(e) => setDiscountedPrice(e.target.value)}
-              className="border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0B7077]"
+              className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0B7077] shadow-sm"
               required
             />
           </div>
@@ -100,15 +95,17 @@ const AddCourseForm = () => {
             placeholder="Course Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full border rounded-md px-4 py-3 min-h-[120px] resize-none focus:outline-none focus:ring-2 focus:ring-[#0B7077]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-4 min-h-[140px] resize-none focus:outline-none focus:ring-2 focus:ring-[#0B7077] shadow-sm"
             required
           />
 
           {/* Image Upload */}
           <div
             {...getRootProps()}
-            className={`border-2 border-dashed rounded-md px-6 py-10 text-center cursor-pointer transition-all ${
-              isDragActive ? "border-[#0B7077]" : "border-gray-300"
+            className={`border-2 border-dashed rounded-xl px-6 py-12 text-center cursor-pointer transition-all hover:border-[#0B7077] ${
+              isDragActive
+                ? "border-[#0B7077] bg-[#f0fdfa]"
+                : "border-gray-300 bg-white"
             }`}
           >
             <input {...getInputProps()} />
@@ -117,14 +114,12 @@ const AddCourseForm = () => {
                 Drop the image here...
               </p>
             ) : image ? (
-              <div>
-                <p className="text-gray-700 font-medium mb-2">
-                  Selected file: {image.name}
-                </p>
+              <div className="flex flex-col items-center">
+                <p className="text-gray-700 font-medium mb-4">{image.name}</p>
                 <img
                   src={URL.createObjectURL(image)}
                   alt="preview"
-                  className="w-32 h-20 mx-auto object-cover rounded"
+                  className="w-40 h-28 object-cover rounded-lg shadow-md"
                 />
               </div>
             ) : (
@@ -140,9 +135,9 @@ const AddCourseForm = () => {
           <div>
             <button
               type="submit"
-              className="bg-[#0B7077] text-white text-sm px-6 py-3 rounded-lg hover:bg-[#0B7077]/90 transition-all"
+              className="flex cursor-pointer items-center justify-center bg-[#0B7077] text-white text-sm px-6 py-3 rounded-xl hover:bg-[#0B7077]/90 transition-all shadow-lg"
             >
-              {loading ? "Submitting..." : "Submit"}{" "}
+              {loading ? "Submitting..." : "Submit"}
               <i className="fa-solid fa-arrow-right ml-2"></i>
             </button>
           </div>

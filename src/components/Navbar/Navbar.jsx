@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, userLogout } from "../../../redux/user_authSlice";
 import { toast } from "react-toastify";
+
 const Navbar = () => {
   const [navbar, setNavbar] = useState(false);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const handleNavbar = (navbar) => {
-    setNavbar(navbar);
-  };
+  const handleNavbar = (navbar) => setNavbar(navbar);
+
   const dispatch = useDispatch();
-  const { user, token, loading } = useSelector((state) => state.user_auth);
+  const { user, token } = useSelector((state) => state.user_auth);
 
   useEffect(() => {
     dispatch(getUser());
@@ -37,11 +37,14 @@ const Navbar = () => {
 
   return (
     <>
-      <div className=" w-full flex flex-row justify-between p-5 items-center">
+      <div className="w-full flex justify-between items-center p-5">
+        {/* Logo */}
         <div>
-          <img src={assets.logo} alt="" className=" h-[2.5rem]" />
+          <img src={assets.logo} alt="Logo" className="h-[2.5rem]" />
         </div>
-        <ul className=" hidden md:flex flex-row space-x-10 font-medium">
+
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex space-x-10 font-medium">
           <Link to="/">
             <a className="cursor-pointer hover:text-[#FD661F]">Home</a>
           </Link>
@@ -58,47 +61,49 @@ const Navbar = () => {
             <a className="cursor-pointer hover:text-[#FD661F]">About Us</a>
           </li>
         </ul>
-        {user && (
+
+        {/* User Profile */}
+        {user ? (
           <div className="relative" ref={dropdownRef}>
             <div
               onClick={() => setOpen(!open)}
-              className="flex justify-center items-center w-10 h-10 rounded-full bg-[#0B7077] text-white font-semibold text-lg shadow-sm cursor-pointer"
+              className="flex justify-center items-center w-10 h-10 rounded-full bg-gradient-to-tr from-[#0B7077] to-[#095f63] text-white font-semibold text-lg shadow-md cursor-pointer transition-all hover:scale-105"
               title={user?.name}
             >
               {user?.name?.charAt(0).toUpperCase()}
             </div>
 
             {open && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                <div className="px-4 py-3 text-sm text-gray-800 border-b">
+              <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden">
+                <div className="px-4 py-3 text-sm text-gray-800 border-b font-medium">
                   {user.name}
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer"
+                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer transition-all"
                 >
                   Logout
                 </button>
               </div>
             )}
           </div>
-        )}
-
-        {!user && (
-          <div className=" hidden md:flex flex-row space-x-10 px-10">
+        ) : (
+          <div className="hidden md:flex space-x-10">
             <Link to="/login">
               <button className="bg-white text-[#0B7077] px-8 py-3 rounded-lg uppercase cursor-pointer hover:bg-white/80">
                 Log in
               </button>
             </Link>
             <Link to="/signup">
-              <button className=" bg-[#0B7077] px-8 py-3 rounded-lg text-white uppercase cursor-pointer hover:bg-[#0B7077]/90">
+              <button className="bg-[#0B7077] px-8 py-3 rounded-lg text-white uppercase cursor-pointer hover:bg-[#0B7077]/90">
                 Sign up
               </button>
             </Link>
           </div>
         )}
-        <div className=" flex md:hidden  items-center">
+
+        {/* Mobile Hamburger */}
+        <div className="flex md:hidden items-center">
           {navbar ? (
             <i
               onClick={() => handleNavbar(!navbar)}
@@ -109,55 +114,59 @@ const Navbar = () => {
               onClick={() => handleNavbar(!navbar)}
               className="fa-solid fa-bars text-3xl cursor-pointer"
             ></i>
-          )}{" "}
+          )}
         </div>
       </div>
-      {navbar ? (
-        <div className="flex md:hidden  w-full bg-white p-4 rounded-lg  ">
-          <ul className=" flex flex-col space-x-10 font-medium space-y-4">
+
+      {/* Mobile Menu */}
+      {navbar && (
+        <div className="flex md:hidden w-full bg-white p-4 rounded-lg">
+          <ul className="flex flex-col space-y-4 font-medium w-full">
             <Link
               to="/"
               className="flex items-center gap-2 pl-4 text-gray-600 hover:text-[#FD661F]"
             >
-              <i className="fa-solid fa-circle-chevron-right "></i>
-              <a className="cursor-pointer hover:text-[#FD661F]">Home</a>
+              <i className="fa-solid fa-circle-chevron-right"></i>
+              <a>Home</a>
             </Link>
             <li className="flex items-center gap-2 pl-4 text-gray-600 hover:text-[#FD661F]">
-              <i className="fa-solid fa-circle-chevron-right "></i>
-              <a className="cursor-pointer">Careers</a>
+              <i className="fa-solid fa-circle-chevron-right"></i>
+              Careers
             </li>
             <li className="flex items-center gap-2 pl-4 text-gray-600 hover:text-[#FD661F]">
-              <i className="fa-solid fa-circle-chevron-right "></i>
-              <a className="cursor-pointer">Blogs</a>
+              <i className="fa-solid fa-circle-chevron-right"></i>
+              Blogs
             </li>
             <Link
               to="/contact-us"
               className="flex items-center gap-2 pl-4 text-gray-600 hover:text-[#FD661F]"
             >
-              <i className="fa-solid fa-circle-chevron-right "></i>
-              <a className="cursor-pointer hover:text-[#FD661F]">Contact Us</a>
+              <i className="fa-solid fa-circle-chevron-right"></i>
+              Contact Us
             </Link>
             <li className="flex items-center gap-2 pl-4 text-gray-600 hover:text-[#FD661F]">
-              <i className="fa-solid fa-circle-chevron-right "></i>
-              <a className="cursor-pointer">About Us</a>
+              <i className="fa-solid fa-circle-chevron-right"></i>
+              About Us
             </li>
-            <div className=" flex flex-wrap ml-5 justify-center  items-center ">
-              <div>
+
+            {/* Mobile login/signup */}
+            {!user && (
+              <div className="flex flex-col space-y-3 mt-4 px-4">
                 <Link to="/login">
-                  <button className=" mb-5 w-full bg-[#0B7077] text-white px-8 py-3 rounded-lg uppercase cursor-pointer hover:bg-[#0B7077]/90">
+                  <button className="w-full cursor-pointer bg-[#0B7077] text-white px-6 py-3 rounded-lg uppercase hover:bg-[#095f63] transition">
                     Log in
                   </button>
                 </Link>
                 <Link to="/signup">
-                  <button className=" w-full bg-[#0B7077] text-white px-8 py-3 rounded-lg uppercase cursor-pointer hover:bg-[#0B7077]/90">
-                    Signup
+                  <button className="w-full cursor-pointer bg-[#0B7077] text-white px-6 py-3 rounded-lg uppercase hover:bg-[#095f63] transition">
+                    Sign up
                   </button>
                 </Link>
               </div>
-            </div>
+            )}
           </ul>
         </div>
-      ) : null}
+      )}
     </>
   );
 };

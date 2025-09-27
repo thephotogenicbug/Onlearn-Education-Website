@@ -2,22 +2,18 @@ import React, { useEffect, useState } from "react";
 import LayoutWrapper from "../components/LayoutWrapper/LayoutWrapper";
 import { useDispatch, useSelector } from "react-redux";
 import { registerAdmin } from "../../redux/authSlice";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { user, loading, error, token } = useSelector((state) => state.auth);
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
-
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e) => {
@@ -33,66 +29,76 @@ const Signup = () => {
   useEffect(() => {
     if (user && token && submitted) {
       toast.success("Registration successful!");
-      setTimeout(() => {
-        navigate("/admin/dashboard");
-      }, 1500);
+      setTimeout(() => navigate("/admin/dashboard"), 1500);
     }
   }, [user, token, submitted, navigate]);
 
   useEffect(() => {
     if (error && submitted) {
-      toast.error(`${error}`);
+      toast.error(error);
       setSubmitted(false);
     }
   }, [error, submitted]);
 
   return (
-    <div>
-      <LayoutWrapper>
-        <div className="h-screen flex items-center justify-center p-5">
-          <div className=" bg-white shadow-lg max-w-screen p-4 m-5 rounded-lg">
-            <form onSubmit={handleSubmit}>
-              <div className="flex flex-col space-y-7">
-                <h1 className=" text-[#0B7077] text-center font-semibold text-xl uppercase">
-                  Admin Signup
-                </h1>
-                <input
-                  type="text"
-                  placeholder="Username"
-                  name="name"
-                  onChange={handleChange}
-                  required
-                  className="bg-gray-300/40 h-[48px] p-4  rounded-lg outline-[#0B7077]"
-                />
-                <input
-                  type="text"
-                  placeholder="Email"
-                  name="email"
-                  onChange={handleChange}
-                  required
-                  className="bg-gray-300/40 h-[48px] p-4  rounded-lg outline-[#0B7077]"
-                />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  onChange={handleChange}
-                  required
-                  className="bg-gray-300/40 h-[48px] p-4 rounded-lg outline-[#0B7077]"
-                />
-                {error && <p> {error} </p>}
+    <div className="h-screen flex items-center justify-center bg-gradient-to-br from-[#e0f7f9] to-[#f0fcfc] p-5">
+      <div className="bg-white shadow-2xl rounded-2xl w-full max-w-md p-8 flex flex-col items-center">
+        <h1 className="text-[#0B7077] text-2xl font-bold mb-6 uppercase tracking-wide text-center">
+          Admin Signup
+        </h1>
 
-                <button
-                  disabled={loading}
-                  className="bg-[#0B7077] text-white  py-2.5 rounded-lg cursor-pointer hover:bg-[#0B7077]/90 uppercase"
-                >
-                  {loading ? "Loading..." : "Signup"}
-                </button>
-              </div>
-            </form>
+        <form onSubmit={handleSubmit} className="w-full">
+          <div className="flex flex-col space-y-5">
+            <input
+              type="text"
+              placeholder="Username"
+              name="name"
+              onChange={handleChange}
+              required
+              className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0B7077] bg-gray-100 transition-all"
+            />
+            <input
+              type="text"
+              placeholder="Email"
+              name="email"
+              onChange={handleChange}
+              required
+              className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0B7077] bg-gray-100 transition-all"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              onChange={handleChange}
+              required
+              className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0B7077] bg-gray-100 transition-all"
+            />
+
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+
+            <button
+              disabled={loading}
+              className="w-full h-12 cursor-pointer bg-[#0B7077] text-white rounded-lg font-semibold uppercase hover:bg-[#0B7077]/90 transition-all"
+            >
+              {loading ? "Loading..." : "Signup"}
+            </button>
           </div>
-        </div>
-      </LayoutWrapper>
+        </form>
+
+        <p className="text-gray-500 text-sm mt-6 text-center">
+          Don't have an account?{" "}
+          <Link
+            to="/admin/login"
+            className="text-[#0B7077] font-semibold hover:underline"
+          >
+            Login
+          </Link>
+        </p>
+
+        <p className="text-gray-400 text-sm mt-2 text-center">
+          © 2025 Admin Panel. All rights reserved.
+        </p>
+      </div>
     </div>
   );
 };

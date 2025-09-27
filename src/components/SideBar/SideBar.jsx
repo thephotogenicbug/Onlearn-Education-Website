@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logoutAdmin } from "../../../redux/authSlice";
 import { toast } from "react-toastify";
 
@@ -13,16 +13,19 @@ const menuItems = [
     label: "View Courses",
     path: "/admin/view-courses",
   },
-  { icon: "fa-arrows-to-eye", label: "Assessments" },
-  { icon: "fa-certificate", label: "Certifications" },
-  { icon: "fa-tarp-droplet", label: "Projects" },
+  // { icon: "fa-arrows-to-eye", label: "Assessments", path: "/admin/dashboard" },
+  // {
+  //   icon: "fa-certificate",
+  //   label: "Certifications",
+  //   path: "/admin/add-course",
+  // },
+  // { icon: "fa-tarp-droplet", label: "Projects", path: "/admin/add-course" },
   { icon: "fa-right-from-bracket", label: "Logout" },
 ];
 
 const SideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const location = useLocation();
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -34,62 +37,85 @@ const SideBar = () => {
 
   return (
     <div
-      className={`bg-white shadow-lg h-screen transition-all duration-300 ease-in-out flex flex-col ${
+      className={`bg-gradient-to-b from-white to-gray-100 shadow-2xl h-screen flex flex-col transition-all duration-300 ${
         isCollapsed ? "w-[80px]" : "w-[260px]"
-      }`}
+      } rounded-r-2xl relative`}
     >
       <div className="flex items-center justify-between p-4 border-b">
         {!isCollapsed && (
-          <img
-            src={assets.logo}
-            alt="logo"
-            className="w-32 object-contain transition-all duration-300"
-          />
+          <img src={assets.logo} alt="logo" className="w-32 object-contain" />
         )}
         <button
           onClick={() => setIsCollapsed((prev) => !prev)}
-          className="text-gray-600 text-xl focus:outline-none ml-auto"
+          className="text-gray-600 text-xl focus:outline-none hover:text-[#0B7077] transition-colors"
         >
           <i className="fa-solid fa-bars"></i>
         </button>
       </div>
-      <ul className="mt-6 space-y-2 px-2">
+
+      <ul className="flex-1 mt-6">
         {menuItems.map(({ icon, label, path }) => {
           const isActive = path && location.pathname === path;
-          const ItemContent = (
+          const content = (
             <>
-              <i className={`fa-solid ${icon} text-lg`}></i>
+              <i
+                className={`fa-solid ${icon} text-lg transition-transform duration-300 ${
+                  isActive
+                    ? "text-[#0B7077]"
+                    : "text-gray-600 group-hover:text-[#0B7077]"
+                }`}
+              ></i>
               {!isCollapsed && (
-                <span className="text-sm font-medium">{label}</span>
+                <span className="ml-4 text-sm font-semibold">{label}</span>
               )}
             </>
           );
 
           return (
-            <li key={label}>
+            <li key={label} className="group relative">
               {path ? (
                 <Link
                   to={path}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all hover:bg-gray-100 ${
-                    isActive
-                      ? "bg-gray-200 font-semibold text-[#0B7077]"
-                      : "text-gray-700"
-                  }`}
+                  className={`flex items-center gap-4 px-4 py-3 rounded-lg mx-2 my-1 transition-all duration-300
+                    ${
+                      isActive
+                        ? "bg-[#0B7077]/10 text-[#0B7077] font-semibold shadow-md"
+                        : "text-gray-700 hover:bg-[#0B7077]/10 hover:text-[#0B7077]"
+                    }`}
                 >
-                  {ItemContent}
+                  {content}
+                  {isCollapsed && (
+                    <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-[#0B7077] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                      {label}
+                    </span>
+                  )}
+                  {!isCollapsed && isActive && (
+                    <span className="absolute left-0 top-0 h-full w-1 bg-[#0B7077] rounded-r-lg"></span>
+                  )}
                 </Link>
               ) : (
                 <div
-                  className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer transition-all"
                   onClick={handleLogout}
+                  className="flex items-center gap-4 px-4 py-3 rounded-lg mx-2 my-1 cursor-pointer transition-all duration-300 hover:bg-[#0B7077]/10 hover:text-[#0B7077] text-gray-700 group"
                 >
-                  {ItemContent}
+                  {content}
+                  {isCollapsed && (
+                    <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-[#0B7077] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                      {label}
+                    </span>
+                  )}
                 </div>
               )}
             </li>
           );
         })}
       </ul>
+
+      {!isCollapsed && (
+        <div className="p-4 text-gray-500 text-xs border-t flex justify-center">
+          Admin Panel © 2025
+        </div>
+      )}
     </div>
   );
 };

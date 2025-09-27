@@ -1,14 +1,15 @@
 import React from "react";
 import LayoutWrapper from "../LayoutWrapper/LayoutWrapper";
 import { assets } from "../../assets/assets";
+import { Icon } from "@iconify/react";
 
 const Footer = () => {
   return (
-    <div className="relative">
+    <footer className="relative bg-[#D2E6E4] pt-10 pb-10">
       {/* Top wave */}
-      <div className="absolute -top-[50px] left-0 w-full overflow-hidden leading-[0] z-[1]">
+      <div className="absolute -top-7 left-0 w-full overflow-hidden leading-[0] z-0 ">
         <svg
-          className="w-full h-[60px] hidden md:block"
+          className="w-full h-[80px] hidden md:block"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
         >
@@ -18,92 +19,115 @@ const Footer = () => {
           />
         </svg>
       </div>
-      <div className="mt-26 w-full bg-[#D2E6E4] max-h-screen p-15 z-[2] relative">
-        <LayoutWrapper>
-          <div className="flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center ">
-            <div className="flex flex-col">
-              <div>
-                <img src={assets.logo} className="w-48 object-cover" alt="" />
-              </div>
-              <div className="mt-8">
-                <p className="text-[#0B7077] font-semibold">
-                  <i className="fa-solid fa-location-dot" />
-                  <span className="ml-2">Address:</span>
-                </p>
-                <p className="text-[#0B7077] font-medium mt-2 ml-6">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                </p>
-                <p className="text-[#0B7077] font-medium mt-5">
-                  <i className="fa-solid fa-phone" />
-                  <span className="ml-2">Tel :+9229341037</span>
-                </p>
-                <p className="text-[#0B7077] font-medium mt-5">
-                  <i className="fa-solid fa-clock" />
-                  <span className="ml-2">Response hours: 8 to 20</span>
-                </p>
-                <p className="text-[#0B7077] font-medium mt-5">
-                  <i className="fa-solid fa-envelope" />
-                  <span className="ml-2">Email: info@onlearn.com</span>
-                </p>
-              </div>
-            </div>
 
-            <div className="mt-5 md:mt-0">
-              <p className="font-semibold">Categories</p>
-              <p className="mt-2 text-[#0B7077] cursor-pointer hover:text-[#0B7077]/80">
-                Counseling
+      <LayoutWrapper>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-16 relative z-10">
+          <div className="flex flex-col">
+            <img
+              src={assets.logo}
+              alt="Logo"
+              className="w-40 md:w-48 object-contain"
+            />
+            <div className="mt-6 space-y-3 text-[#0B7077] text-sm">
+              <p className="flex items-center gap-2 font-semibold">
+                <i className="fa-solid fa-location-dot" /> Address:
               </p>
-              <p className="mt-2 text-[#0B7077] cursor-pointer hover:text-[#0B7077]/80">
-                Health and fitness
+              <p className="ml-6">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit
               </p>
-              <p className="mt-2 text-[#0B7077] cursor-pointer hover:text-[#0B7077]/80">
-                Individual development
+              <p className="flex items-center gap-2 font-medium">
+                <i className="fa-solid fa-phone" /> Tel: +9229341037
               </p>
-            </div>
-
-            <div className="mt-5 md:mt-0">
-              <p className="font-semibold ">Links</p>
-              <p className="mt-2 text-[#0B7077] cursor-pointer hover:text-[#0B7077]/80">
-                About us
+              <p className="flex items-center gap-2 font-medium">
+                <i className="fa-solid fa-clock" /> Hours: 8 to 20
               </p>
-              <p className="mt-2 text-[#0B7077] cursor-pointer hover:text-[#0B7077]/80">
-                blog
+              <p className="flex items-center gap-2 font-medium">
+                <i className="fa-solid fa-envelope" /> info@onlearn.com
               </p>
-            </div>
-
-            <div className="w-full max-w-md mt-5 md:mt-0">
-              <h3 className="text-gray-700 text-center  mb-4">
-                Stay up to date with the latest courses
-              </h3>
-
-              <form className="flex flex-col gap-3 md:relative">
-                {/* Input */}
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="h-[50px] w-full px-4 pr-[100px] bg-white rounded-lg outline-none shadow-md text-sm"
-                  required
-                />
-
-                {/* Button - positioned inside input on md+, stacked below on mobile */}
-                <button
-                  type="submit"
-                  className="h-[40px] px-5 bg-[#0B7077] text-white rounded-lg font-semibold hover:bg-[#095e62] transition cursor-pointer 
-        md:absolute md:right-2 md:top-1.5"
-                >
-                  Send
-                </button>
-              </form>
             </div>
           </div>
-        </LayoutWrapper>
-        <img
-          src={assets.gift_card_header_swrill}
-          alt="swirl"
-          className="absolute bottom-0 right-0 w-full max-w-[500px] md:max-w-[600px] object-contain z-10 pointer-events-none"
-        />
-      </div>
-    </div>
+
+          <div className="flex flex-col space-y-3">
+            <h3 className="text-[#0B7077] font-semibold text-lg">Categories</h3>
+            <p className="text-[#0B7077] hover:text-[#095e62] cursor-pointer transition">
+              Counseling
+            </p>
+            <p className="text-[#0B7077] hover:text-[#095e62] cursor-pointer transition">
+              Health & Fitness
+            </p>
+            <p className="text-[#0B7077] hover:text-[#095e62] cursor-pointer transition">
+              Individual Development
+            </p>
+          </div>
+
+          <div className="flex flex-col space-y-3">
+            <h3 className="text-[#0B7077] font-semibold text-lg">Links</h3>
+            <p className="text-[#0B7077] hover:text-[#095e62] cursor-pointer transition">
+              About Us
+            </p>
+            <p className="text-[#0B7077] hover:text-[#095e62] cursor-pointer transition">
+              Blog
+            </p>
+          </div>
+
+          <div className="flex flex-col">
+            <h3 className="text-[#0B7077] font-semibold text-lg mb-3">
+              Stay Up to Date
+            </h3>
+            <p className="text-[#0B7077] mb-3 text-sm">
+              Subscribe to get the latest courses and updates.
+            </p>
+            <form className="flex flex-col md:flex-row gap-3 md:gap-0 relative">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full h-12 px-4 rounded-lg shadow-md border border-gray-200 focus:outline-none"
+                required
+              />
+              <button
+                type="submit"
+                className="h-12 md:absolute md:right-0 md:top-0 px-5 bg-[#0B7077] text-white font-semibold rounded-lg hover:bg-[#095e62] transition"
+              >
+                Send
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <hr className="my-8 border-gray-300" />
+
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+          <div className="flex gap-4 justify-center sm:justify-start">
+            <Icon
+              icon="lets-icons:insta"
+              className="text-2xl text-[#0B7077] cursor-pointer hover:text-[#095e62] transition"
+            />
+            <Icon
+              icon="ph:facebook-logo"
+              className="text-2xl text-[#0B7077] cursor-pointer hover:text-[#095e62] transition"
+            />
+            <Icon
+              icon="ri:twitter-x-fill"
+              className="text-2xl text-[#0B7077] cursor-pointer hover:text-[#095e62] transition"
+            />
+            <Icon
+              icon="mdi:youtube"
+              className="text-2xl text-[#0B7077] cursor-pointer hover:text-[#095e62] transition"
+            />
+          </div>
+          <p className="text-sm text-[#0B7077]">
+            &copy; {new Date().getFullYear()} Naveen Kumar. All rights reserved.
+          </p>
+        </div>
+      </LayoutWrapper>
+
+      {/* Decorative swirl */}
+      <img
+        src={assets.gift_card_header_swrill}
+        alt="swirl"
+        className="absolute bottom-0 right-0 w-full max-w-[500px] md:max-w-[600px] object-contain z-0 pointer-events-none"
+      />
+    </footer>
   );
 };
 
